@@ -2,43 +2,53 @@ require "open-uri"
 
 class LandingController < ApplicationController
   def index
-    escaper = URI::Parser.new
-    list_url = escaper.escape("https://anconnuri.com/교회소식/?category1=주보&pageid=1")
-    begin
-      body = get_body(list_url)
-      this_week_url = "https://anconnuri.com" + find_this_week_url(body.html_safe).to_s
-      next_body = get_body(this_week_url)
-      @image_url = find_image_url(next_body.html_safe).to_s
-    rescue => e
-      puts e
-    end
+    @image_urls = find_image_urls.reject {|a| a.empty? }
 
     respond_to do |format|
       format.html
       format.json do
-        render json: { external_url: @image_url }.to_json
+        render json: {
+          external_url: @image_urls[0],
+          image_urls: @image_urls
+        }.to_json
       end
     end
   end
 
   private
 
-  def get_body(uri)
-    data = URI.parse(uri).read
-    data
+  def find_image_urls
+    node = Nokogiri::XML::DocumentFragment.parse(this_week_body.to_s)
+    node.css(".content-view img").collect { |tag| tag.attributes["data-src"].to_s }
+  rescue => e
+    puts e
   end
 
-  def find_this_week_url(page)
-    node = Nokogiri::XML::DocumentFragment.parse(page.to_s)
+  def find_this_week_url
+    node = Nokogiri::XML::DocumentFragment.parse(list_body.to_s)
     node.css(".kboard-list-title a")[1].attributes["href"]
   rescue => e
     puts e
   end
 
-  def find_image_url(page)
-    node = Nokogiri::XML::DocumentFragment.parse(page.to_s)
-    node.css(".content-view img")[0].attributes["data-src"]
+  def this_week_body
+    url = "https://anconnuri.com" + find_this_week_url.to_s
+    get_body(url)
+  end
+
+  def list_body
+    url = escaped("https://anconnuri.com/교회소식/?category1=주보&pageid=1")
+    get_body(url)
+  end
+
+  def get_body(uri)
+    data = URI.parse(uri).read
+    data.html_safe
   rescue => e
     puts e
+  end
+
+  def escaped(url)
+    URI::Parser.new.escape(url)
   end
 end
