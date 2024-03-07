@@ -1,5 +1,3 @@
-require "open-uri"
-
 class LandingController < ApplicationController
   def index
     @image_urls = find_image_urls.reject {|a| a.empty? }
@@ -39,16 +37,5 @@ class LandingController < ApplicationController
   def list_body
     url = escaped("https://anconnuri.com/교회소식/?category1=주보&pageid=1")
     get_body(url)
-  end
-
-  def get_body(uri)
-    data = URI.parse(uri).read
-    data.html_safe
-  rescue => e
-    puts e
-  end
-
-  def escaped(url)
-    URI::Parser.new.escape(url)
   end
 end
