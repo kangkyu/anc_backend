@@ -1,9 +1,9 @@
 class VideosController < ApplicationController
   def index
     @videos = ChannelVideo.order(:created_at).last(12)
-    youtube_ids = @videos.map(&:youtube_id)
+    thumbnail_urls = @videos.map(&:thumbnail_url)
 
-    if stale?(etag: youtube_ids)
+    if stale?(etag: thumbnail_urls)
       respond_to do |format|
         format.json { render json: @videos }
       end
