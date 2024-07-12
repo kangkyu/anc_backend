@@ -1,15 +1,18 @@
 namespace :anc do
   desc "Update recent video list"
   task :update_most_recent_videos => :environment do
-    ChannelVideo.delete_all
-    videos.each do |video|
-      sleep 0.2
-      ChannelVideo.create(video)
+    videos = list_videos
+    if videos.size > 0
+      ChannelVideo.delete_all
+      videos.each do |video|
+        sleep 0.2
+        ChannelVideo.create(video)
+      end
     end
   end
 end
 
-def videos
+def list_videos
   return [] if list_body.blank?
   if list_body['error'].present?
     puts list_body['error']
