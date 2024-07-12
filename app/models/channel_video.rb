@@ -1,0 +1,2 @@
+class ChannelVideo < ApplicationRecord
+end
