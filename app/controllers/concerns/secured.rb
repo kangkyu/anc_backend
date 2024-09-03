@@ -22,7 +22,7 @@ module Secured
 
     validation_response = Auth0Client.validate_token(token)
 
-    return unless (error = validation_response.error)
+    return validation_response unless (error = validation_response.error)
 
     render json: { message: error.message }, status: error.status
   end

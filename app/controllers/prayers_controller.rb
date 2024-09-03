@@ -1,7 +1,9 @@
 class PrayersController < ApplicationController
-  before_action :authorize
 
   def create
+    response = authorize
+    puts response
+    puts "*******************"
     @prayer = Prayer.new(prayer_params)
     if @prayer.save
       head :created
@@ -17,5 +19,11 @@ class PrayersController < ApplicationController
   def pray
     @prayer = Prayer.find(params[:id])
     # TODO
+  end
+
+  private
+
+  def prayer_params
+    params.require(:prayer).permit(:content, :auth0_user_id)
   end
 end
