@@ -2,7 +2,8 @@ class PrayersController < ApplicationController
 
   def create
     response = authorize
-    puts response
+    puts response.decoded_token
+    puts response.error
     puts "*******************"
     @prayer = Prayer.new(prayer_params)
     if @prayer.save
