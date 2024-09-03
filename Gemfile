@@ -65,3 +65,9 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+# gem "auth0", "~> 5.17"
+# gem 'omniauth-auth0', '~> 3.0'
+# gem 'omniauth-rails_csrf_protection', '~> 1.0'
+gem 'jwt'
+# https://auth0.com/docs/quickstart/backend/rails/01-authorization
