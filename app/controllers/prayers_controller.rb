@@ -1,0 +1,3 @@
+class PrayersController < ApplicationController
+
+end
