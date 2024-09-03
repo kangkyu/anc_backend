@@ -1,9 +1,19 @@
 class PrayersController < ApplicationController
 
   def create
-    response = authorize
-    puts response.decoded_token
-    puts response.error
+
+    token = token_from_request
+
+    return if performed?
+
+    validation_response = Auth0Client.validate_token(token)
+
+    if error = validation_response.error
+      render(json: { message: error.message }, status: error.status) and return
+    end
+
+    puts validation_response.decoded_token
+    puts validation_response.error
     puts "*******************"
     @prayer = Prayer.new(prayer_params)
     if @prayer.save
