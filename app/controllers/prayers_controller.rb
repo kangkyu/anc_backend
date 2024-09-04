@@ -1,7 +1,6 @@
 class PrayersController < ApplicationController
 
   def create
-
     token = token_from_request
 
     return if performed?
@@ -12,9 +11,6 @@ class PrayersController < ApplicationController
       render(json: { message: error.message }, status: error.status) and return
     end
 
-    puts validation_response.decoded_token
-    puts validation_response.error
-    puts "*******************"
     @prayer = Prayer.new(prayer_params)
     if @prayer.save
       head :created
