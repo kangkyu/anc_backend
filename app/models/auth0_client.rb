@@ -9,6 +9,13 @@ class Auth0Client
   Error = Struct.new(:message, :status)
   Response = Struct.new(:decoded_token, :error)
 
+  Token = Struct.new(:token) do
+    def get_user_id
+      puts token[0]
+      token[0]['user_id'] # TODO: like this?
+    end
+  end
+
   # Helper Functions 
   def self.domain_url
     "https://#{Rails.application.credentials.auth0.domain}/"
@@ -43,7 +50,7 @@ class Auth0Client
 
     decoded_token = decode_token(token, jwks_hash)
 
-    Response.new(decoded_token, nil)
+    Response.new(Token.new(decoded_token), nil)
   rescue JWT::VerificationError, JWT::DecodeError => e
     error = Error.new('Bad credentials', :unauthorized)
     Response.new(nil, error)

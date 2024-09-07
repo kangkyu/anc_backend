@@ -21,6 +21,7 @@ module Secured
     return if performed?
 
     validation_response = Auth0Client.validate_token(token)
+    @decoded_token = validation_response.decoded_token
 
     return unless (error = validation_response.error)
 
@@ -44,4 +45,9 @@ module Secured
 
     token
   end
+
+  def auth0_user_id
+    @decoded_token.get_user_id
+  end
+
 end

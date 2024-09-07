@@ -68,3 +68,4 @@ end
 
 gem 'jwt'
 # https://auth0.com/docs/quickstart/backend/rails/01-authorization
+# https://github.com/auth0-samples/auth0-rubyonrails-api-samples/blob/master/01-Authentication-RS256/app/controllers/concerns/secured.rb

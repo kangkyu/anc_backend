@@ -1,16 +1,10 @@
 class PrayersController < ApplicationController
+  protect_from_forgery with: :null_session # For private controllers only
+  include Secured
+
+  before_action :authorize
 
   def create
-    token = token_from_request
-
-    return if performed?
-
-    validation_response = Auth0Client.validate_token(token)
-
-    if error = validation_response.error
-      render(json: { message: error.message }, status: error.status) and return
-    end
-
     @prayer = Prayer.new(prayer_params)
     if @prayer.save
       head :created
@@ -31,6 +25,6 @@ class PrayersController < ApplicationController
   private
 
   def prayer_params
-    params.require(:prayer).permit(:content, :auth0_user_id)
+    params.require(:prayer).permit(:content).merge(auth0_user_id: auth0_user_id)
   end
 end
