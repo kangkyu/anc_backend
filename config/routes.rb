@@ -7,6 +7,10 @@ Rails.application.routes.draw do
   get 'jubo', to: "landing#index"
 
   get 'videos', to: "videos#index"
+  resources :prayers, only: [:show, :create] do
+    post 'pray', on: :member
+  end
+
   # Defines the root path route ("/")
   # root "posts#index"
   root "landing#index"
