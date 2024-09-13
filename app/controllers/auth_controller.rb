@@ -17,7 +17,7 @@ class AuthController < ApiController
   def payload_id_token(id_token)
     # decode and get payload
     begin
-      decoded_token = JWT.decode(token, nil, false, {
+      decoded_token = JWT.decode(id_token, nil, false, {
         algorithm: 'HS256',
         aud: 'anc-mobile',
         verify_aud: true
