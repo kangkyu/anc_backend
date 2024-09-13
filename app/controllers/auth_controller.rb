@@ -15,6 +15,17 @@ class AuthController < ApplicationController
   private
 
   def payload_id_token(id_token)
-    # TODO: decode and get payload
+    # decode and get payload
+    begin
+      decoded_token = JWT.decode(token, nil, false, {
+        algorithm: 'HS256',
+        aud: 'anc-mobile',
+        verify_aud: true
+      })
+      payload = decoded_token[0]
+    rescue JWT::DecodeError => e
+      Rails.logger.error "Invalid ID token: #{e}"
+      nil
+    end
   end
 end
