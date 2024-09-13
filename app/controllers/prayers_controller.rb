@@ -1,4 +1,6 @@
 class PrayersController < ApiController
+  before_action :authenticate_token
+
   def create
     @prayer = Prayer.new(prayer_params)
     if @prayer.save
