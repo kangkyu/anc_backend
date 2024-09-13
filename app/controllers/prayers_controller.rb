@@ -1,5 +1,4 @@
-class PrayersController < ApplicationController
-
+class PrayersController < ActionController::API
   def create
     @prayer = Prayer.new(prayer_params)
     if @prayer.save
@@ -10,7 +9,12 @@ class PrayersController < ApplicationController
   end
 
   def show
-    @prayer = Prayer.find(params[:id])
+    if Prayer.exists?(params[:id])
+      @prayer = Prayer.find(params[:id])
+      render json: @prayer
+    else
+      render json: { error: 'Record missing' }, status: :not_found
+    end
   end
 
   private
