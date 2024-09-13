@@ -1,6 +1,6 @@
 class AuthController < ApplicationController
 
-  def google_oauth2
+  def firebase_auth
     id_token = request.headers['Authorization'].split(' ').last
     user_info = payload_id_token(id_token)
 
