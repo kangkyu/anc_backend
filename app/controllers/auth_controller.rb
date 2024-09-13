@@ -6,7 +6,7 @@ class AuthController < ApiController
 
     if user_info
       user = User.from_firebase(user_info)
-      render json: { token: user.generate_jwt, user: user }, status: :ok
+      render json: { token: user.generate_jwt }, status: :ok
     else
       render json: { error: 'Invalid token' }, status: :unauthorized
     end
