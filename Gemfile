@@ -65,6 +65,3 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
-
-gem 'jwt'
-# https://auth0.com/docs/quickstart/backend/rails/01-authorization
