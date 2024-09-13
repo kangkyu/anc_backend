@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  validates :organization_id, presence: true
+  validates :firebase_user, presence: true
 
   def self.from_firebase(payload)
     where(firebase_user: payload['user_id']).first_or_initialize do |user|
