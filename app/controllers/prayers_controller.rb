@@ -1,4 +1,4 @@
-class PrayersController < ActionController::API
+class PrayersController < ApiController
   def create
     @prayer = Prayer.new(prayer_params)
     if @prayer.save

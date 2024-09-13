@@ -1,4 +1,4 @@
-class AuthController < ApplicationController
+class AuthController < ApiController
 
   def firebase_auth
     id_token = request.headers['Authorization'].split(' ').last
