@@ -6,4 +6,4 @@ Pagy::DEFAULT[:items] = 25  # Items per page
 Pagy::DEFAULT[:metadata] = [:page, :items, :count, :pages, :prev, :next]
 
 # Better user experience handled automatically
-Pagy::DEFAULT[:overflow] = :last_page
+Pagy::DEFAULT[:overflow] = :empty_page
