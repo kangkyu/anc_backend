@@ -20,7 +20,7 @@ class PrayersController < ApiController
   # end
 
   def index
-    @pagy, @prayers = pagy(Prayer.order(created_at: :desc), items: 1)
+    @pagy, @prayers = pagy(Prayer.order(created_at: :desc), limit: 1)
 
     render json: @prayers
   end
