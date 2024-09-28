@@ -67,3 +67,5 @@ group :test do
 end
 
 gem "jwt"
+
+gem "pagy", "~> 9.0"

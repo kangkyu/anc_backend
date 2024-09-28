@@ -1,4 +1,6 @@
 class PrayersController < ApiController
+  before_action :authenticate_request
+
   def create
     @prayer = Prayer.new(prayer_params)
     if @prayer.save
@@ -8,13 +10,19 @@ class PrayersController < ApiController
     end
   end
 
-  def show
-    if Prayer.exists?(params[:id])
-      @prayer = Prayer.find(params[:id])
-      render json: @prayer
-    else
-      render json: { error: 'Record missing' }, status: :not_found
-    end
+  # def show
+  #   if Prayer.exists?(params[:id])
+  #     @prayer = Prayer.find(params[:id])
+  #     render json: @prayer
+  #   else
+  #     render json: { error: 'Record missing' }, status: :not_found
+  #   end
+  # end
+
+  def index
+    @pagy, @prayers = pagy(Prayer.order(created_at: :desc), items: 1)
+
+    render json: @prayers
   end
 
   private

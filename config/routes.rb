@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get 'jubo', to: "landing#index"
 
   get 'videos', to: "videos#index"
-  resources :prayers, only: [:show, :create] do
+  resources :prayers, only: [:create, :index] do
     post 'pray', on: :member
   end
 
