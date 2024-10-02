@@ -4,7 +4,7 @@ class PrayersController < ApiController
   def create
     @prayer = Prayer.new(prayer_params)
     if @prayer.save
-      head :created
+      render json: @prayer, status: :created
     else
       render json: @prayer.errors, status: :unprocessable_entity
     end
