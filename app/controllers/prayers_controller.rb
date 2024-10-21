@@ -3,14 +3,18 @@ class PrayersController < ApiController
 
   def pray
     @prayer = Prayer.find(params[:id])
+    if @prayer.prayed_by(current_user)
+      render json: { error: 'No more than once per user' }, status: :unprocessable_entity
+      return
+    end
 
     Prayer.transaction do
       Prayer.increment_counter(:counter, @prayer.id)
-      Praying.create!(user: current_user, prayer: @prayer)
+      @prayer.prayings.create!(user: current_user)
     end
 
     @prayer.reload
-    render json: @prayer, status: :ok
+    render json: @prayer.as_json.merge(user_prayed: @prayer.prayed_by(current_user)), status: :ok
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'Record not found' }, status: :not_found
   end
