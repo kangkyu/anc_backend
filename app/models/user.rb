@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :prayers
+
   has_many :prayings
   has_many :incremented_prayers, through: :prayings, source: :prayer
 
