@@ -6,7 +6,7 @@ class PrayersController < ApiController
 
     Prayer.transaction do
       Prayer.increment_counter(:counter, @prayer.id)
-      Praying.create!(user_id: 1, prayer: @prayer)
+      Praying.create!(user: current_user, prayer: @prayer)
     end
 
     @prayer.reload
