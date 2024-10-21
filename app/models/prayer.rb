@@ -8,6 +8,6 @@ class Prayer < ApplicationRecord
   validates :counter, numericality: { greater_than_or_equal_to: 0 }
 
   def prayed_by(user)
-    prayings.exist?(user: user)
+    prayings.exists?(user: user)
   end
 end

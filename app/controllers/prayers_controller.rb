@@ -14,7 +14,7 @@ class PrayersController < ApiController
     end
 
     @prayer.reload
-    render json: @prayer.as_json.merge(user_prayed: @prayer.prayed_by(current_user)), status: :ok
+    render json: @prayer.as_json.merge("user_prayed" => @prayer.prayed_by(User.last)), status: :ok
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'Record not found' }, status: :not_found
   end
