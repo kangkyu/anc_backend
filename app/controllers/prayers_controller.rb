@@ -14,7 +14,7 @@ class PrayersController < ApiController
     end
 
     @prayer.reload
-    render json: @prayer.as_json.merge("user_prayed" => @prayer.prayed_by(current_user)), status: :ok
+    render json: prayer_json(@prayer), status: :ok
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'Record not found' }, status: :not_found
   end
@@ -22,7 +22,7 @@ class PrayersController < ApiController
   def create
     @prayer = current_user.prayers.build(prayer_params)
     if @prayer.save
-      render json: @prayer.as_json.merge("user_prayed" => @prayer.prayed_by(current_user)), status: :created
+      render json: prayer_json(@prayer), status: :created
     else
       render json: @prayer.errors, status: :unprocessable_entity
     end
@@ -40,12 +40,16 @@ class PrayersController < ApiController
   def index
     @pagy, @prayers = pagy(Prayer.order(created_at: :desc), limit: 1)
 
-    render json: @prayers.map {|prayer| prayer.as_json.merge("user_prayed" => prayer.prayed_by(current_user))}
+    render json: @prayers.map {|prayer| prayer_json(prayer)}
   end
 
   private
 
   def prayer_params
     params.require(:prayer).permit(:content)
+  end
+
+  def prayer_json(prayer)
+    prayer.as_json.merge("user_prayed" => prayer.prayed_by(current_user))
   end
 end
