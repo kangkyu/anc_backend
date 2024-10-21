@@ -10,13 +10,9 @@ class PrayersController < ApiController
     end
 
     @prayer.reload
-    render json: {
-      id: @prayer.id,
-      counter: @prayer.counter,
-      increment_count: @prayer.prayings.count
-    }, status: :ok
+    render json: @prayer, status: :ok
   rescue ActiveRecord::RecordNotFound
-    render json: { error: 'Model not found' }, status: :not_found
+    render json: { error: 'Record not found' }, status: :not_found
   end
 
   def create
