@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  has_many :prayings
+  has_many :incremented_prayers, through: :prayings, source: :prayer
+
   validates :firebase_user, presence: true
 
   def self.from_firebase(payload)

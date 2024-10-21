@@ -1,8 +1,26 @@
 class PrayersController < ApiController
   before_action :authenticate_request
 
+  def pray
+    @prayer = Prayer.find(params[:id])
+
+    Prayer.transaction do
+      Prayer.increment_counter(:counter, @prayer.id)
+      Praying.create!(user_id: 1, prayer: @prayer)
+    end
+
+    @prayer.reload
+    render json: {
+      id: @prayer.id,
+      counter: @prayer.counter,
+      increment_count: @prayer.prayings.count
+    }, status: :ok
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: 'Model not found' }, status: :not_found
+  end
+
   def create
-    @prayer = Prayer.new(prayer_params)
+    @prayer = current_user.prayers.build(prayer_params)
     if @prayer.save
       render json: @prayer, status: :created
     else
