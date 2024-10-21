@@ -22,7 +22,7 @@ class PrayersController < ApiController
   def create
     @prayer = current_user.prayers.build(prayer_params)
     if @prayer.save
-      render json: @prayer, status: :created
+      render json: @prayer.as_json.merge("user_prayed" => @prayer.prayed_by(User.last)), status: :created
     else
       render json: @prayer.errors, status: :unprocessable_entity
     end
@@ -40,7 +40,7 @@ class PrayersController < ApiController
   def index
     @pagy, @prayers = pagy(Prayer.order(created_at: :desc), limit: 1)
 
-    render json: @prayers
+    render json: @prayers.map {|prayer| prayer.as_json.merge("user_prayed" => prayer.prayed_by(User.last))}
   end
 
   private
