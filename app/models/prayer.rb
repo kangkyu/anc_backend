@@ -4,7 +4,6 @@ class Prayer < ApplicationRecord
   has_many :prayings
   has_many :incremented_users, through: :prayings, source: :user
 
-  validates :title, presence: true
   validates :counter, numericality: { greater_than_or_equal_to: 0 }
 
   def prayed_by(user)
