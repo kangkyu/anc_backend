@@ -11,7 +11,9 @@ Rails.application.routes.draw do
     post 'pray', on: :member
   end
 
-    post 'auth/firebase-auth', to: 'auth#firebase_auth'
+  post 'auth/firebase-auth', to: 'auth#firebase_auth'
+
+  get "privacy-policy", to: "public_pages#privacy_policy"
 
   # Defines the root path route ("/")
   # root "posts#index"
